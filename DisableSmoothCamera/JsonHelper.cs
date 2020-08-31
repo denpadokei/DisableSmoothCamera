@@ -6,11 +6,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public class FileHelpers
+public class JsonHelpers
 {
-	
-
-	// Token: 0x0600000B RID: 11 RVA: 0x00002390 File Offset: 0x00000590
 	public static string GetUniqueDirectoryNameByAppendingNumber(string dirName)
 	{
 		int num = 0;
@@ -22,7 +19,6 @@ public class FileHelpers
 		return text;
 	}
 
-	// Token: 0x0600000C RID: 12 RVA: 0x000023C4 File Offset: 0x000005C4
 	public static string[] GetFilePaths(string directoryPath, HashSet<string> extensions)
 	{
 		if (!Directory.Exists(directoryPath)) {
@@ -39,7 +35,6 @@ public class FileHelpers
 		return list.ToArray();
 	}
 
-	// Token: 0x0600000D RID: 13 RVA: 0x00002428 File Offset: 0x00000628
 	public static string[] GetFileNamesFromFilePaths(string[] filePaths)
 	{
 		List<string> list = new List<string>();
@@ -49,7 +44,6 @@ public class FileHelpers
 		return list.ToArray();
 	}
 
-	// Token: 0x0600000E RID: 14 RVA: 0x00002464 File Offset: 0x00000664
 	public static void SaveToJSONFile(object obj, string filePath, string tempFilePath, string backupFilePath)
 	{
 		try {
@@ -66,7 +60,6 @@ public class FileHelpers
 		}
 	}
 
-	// Token: 0x0600000F RID: 15 RVA: 0x000024B0 File Offset: 0x000006B0
 	public static T LoadFromJSONFile<T>(string filePath, string backupFilePath = null) where T : class
 	{
 		T t = default(T);
@@ -89,7 +82,6 @@ public class FileHelpers
 		return t;
 	}
 
-	// Token: 0x06000010 RID: 16 RVA: 0x00002530 File Offset: 0x00000730
 	public static string LoadJSONFile(string filePath, string backupFilePath = null)
 	{
 		string text = null;
