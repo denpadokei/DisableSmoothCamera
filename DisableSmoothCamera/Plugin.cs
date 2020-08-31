@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 using BS_Utils.Utilities;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace DisableSmoothCamera
 {
@@ -22,6 +24,11 @@ namespace DisableSmoothCamera
         public static SettingsFlowCoordinator settingsFlowCoordinator;
 
         public static MainSettingsModelSO setting;
+
+        string filePath = Application.persistentDataPath + "/settings.cfg";
+        //string tempFilePath = Application.persistentDataPath + "/settings.cfg.tmp";
+        //string backupFilePath = Application.persistentDataPath + "/settings.cfg.bak";
+
         [Init]
         /// <summary>
         /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
@@ -33,6 +40,17 @@ namespace DisableSmoothCamera
             instance = this;
             Logger.log = logger;
             Logger.log.Debug("Logger initialized.");
+            try {
+                var settings = JsonConvert.DeserializeObject<ConfigEntity>(File.ReadAllText(this.filePath));
+                if (settings.smoothCameraEnabled == 1) {
+                    settings.smoothCameraEnabled = 0;
+                    File.WriteAllText(filePath, JsonConvert.SerializeObject(settings));
+                }
+            }
+            catch (Exception e) {
+                Logger.log.Error(e);
+            }
+            
         }
 
         #region BSIPA Config
@@ -51,7 +69,6 @@ namespace DisableSmoothCamera
         public void OnApplicationStart()
         {
             Logger.log.Debug("OnApplicationStart");
-            
             BSEvents.earlyMenuSceneLoadedFresh += this.BSEvents_earlMenuSceneLoadedFresh;
 
         }
@@ -63,6 +80,11 @@ namespace DisableSmoothCamera
 
             setting.smoothCameraEnabled.didChangeEvent -= this.SmoothCameraEnabled_didChangeEvent;
             setting.smoothCameraEnabled.didChangeEvent += this.SmoothCameraEnabled_didChangeEvent;
+
+            if (setting.smoothCameraEnabled.value) {
+                setting.smoothCameraEnabled.value = false;
+
+            }
         }
 
 
@@ -73,6 +95,8 @@ namespace DisableSmoothCamera
                 setting.smoothCameraEnabled.value = false;
             }
         }
+
+
 
         [OnExit]
         public void OnApplicationQuit()
