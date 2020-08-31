@@ -70,7 +70,6 @@ namespace DisableSmoothCamera
         {
             Logger.log.Debug("OnApplicationStart");
             BSEvents.earlyMenuSceneLoadedFresh += this.BSEvents_earlMenuSceneLoadedFresh;
-
         }
 
         private void BSEvents_earlMenuSceneLoadedFresh(ScenesTransitionSetupDataSO obj)
@@ -80,11 +79,6 @@ namespace DisableSmoothCamera
 
             setting.smoothCameraEnabled.didChangeEvent -= this.SmoothCameraEnabled_didChangeEvent;
             setting.smoothCameraEnabled.didChangeEvent += this.SmoothCameraEnabled_didChangeEvent;
-
-            if (setting.smoothCameraEnabled.value) {
-                setting.smoothCameraEnabled.value = false;
-
-            }
         }
 
 
@@ -96,13 +90,10 @@ namespace DisableSmoothCamera
             }
         }
 
-
-
         [OnExit]
         public void OnApplicationQuit()
         {
             Logger.log.Debug("OnApplicationQuit");
-
         }
     }
 }
